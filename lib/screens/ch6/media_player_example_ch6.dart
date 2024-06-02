@@ -15,15 +15,7 @@ class CarouselDemo extends StatelessWidget {
           darkTheme: ThemeData.dark(),
           themeMode: ThemeMode.values.toList()[value as int],
           debugShowCheckedModeBanner: false,
-          routes: {
-            '/': (ctx) => CarouselDemoHome(),
-
-            '/complicated': (ctx) => ComplicatedImageDemo(),
-
-            '/indicator': (ctx) => CarouselWithIndicatorDemo(),
-
-            '/zoom': (ctx) => EnlargeStrategyZoomDemo(),
-          },
+          home: CarouselWithIndicatorDemo(),
         );
       },
       valueListenable: themeMode,
@@ -31,57 +23,21 @@ class CarouselDemo extends StatelessWidget {
   }
 }
 
-class DemoItem extends StatelessWidget {
-  final String title;
-  final String route;
-  DemoItem(this.title, this.route);
-
-  @override
-  Widget build(BuildContext context) {
-    return ListTile(
-      title: Text(title),
-      onTap: () {
-        Navigator.pushNamed(context, route);
-      },
-    );
-  }
-}
-
-class CarouselDemoHome extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text('Carousel demo'),
-        actions: [
-          IconButton(
-              icon: Icon(Icons.nightlight_round),
-              onPressed: () {
-                themeMode.value = themeMode.value == 1 ? 2 : 1;
-              })
-        ],
-      ),
-      body: ListView(
-        children: <Widget>[
-          DemoItem('More complicated image slider', '/complicated'),
-          DemoItem('Carousel with indicator controller demo', '/indicator'),
-          DemoItem('Enlarge strategy: zoom demo', '/zoom'),
-        ],
-      ),
-    );
-  }
-}
 
 
-final List<Widget> imageSliders = imgList
-    .map((item) => Container(
+
+
+
+final List<Widget> imageSliders = imgList.map((item) => Container(
   child: Container(
+    height: 550,
+    width: 500,
     margin: EdgeInsets.all(5.0),
     child: ClipRRect(
         borderRadius: BorderRadius.all(Radius.circular(20.0)),
         child: Stack(
           children: <Widget>[
-            Image.asset(item, fit: BoxFit.cover,width: double.infinity,height: double.infinity,),
+            Image.asset(item['IMAGE'], fit: BoxFit.cover,width: double.infinity,height: double.infinity),
             Positioned(
               bottom: 0.0,
               left: 0.0,
@@ -100,7 +56,7 @@ final List<Widget> imageSliders = imgList
                 padding: EdgeInsets.symmetric(
                     vertical: 10.0, horizontal: 20.0),
                 child: Text(
-                  'No. ${imgList.indexOf(item)} image',
+                  '${item['WORD']}',
                   style: TextStyle(
                     color: Colors.white,
                     fontSize: 20.0,
@@ -116,24 +72,7 @@ final List<Widget> imageSliders = imgList
 )
     .toList();
 
-class ComplicatedImageDemo extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(title: Text('Complicated image slider demo')),
-      body: Container(
-        child: CarouselSlider(
-          options: CarouselOptions(
-            autoPlay: true,
-            aspectRatio: 1,
-            enlargeCenterPage: true,
-          ),
-          items: imageSliders,
-        ),
-      ),
-    );
-  }
-}
+
 
 
 class CarouselWithIndicatorDemo extends StatefulWidget {
@@ -150,7 +89,15 @@ class _CarouselWithIndicatorState extends State<CarouselWithIndicatorDemo> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text('Carousel with indicator controller demo')),
+      appBar: AppBar(title: Text('India Today'),
+        actions: [
+          IconButton(
+              icon: Icon(Icons.nightlight_round),
+              onPressed: () {
+                themeMode.value = themeMode.value == 1 ? 2 : 1;
+              })
+        ],
+      ),
       body: Column(children: [
         Expanded(
           child: CarouselSlider(
@@ -159,7 +106,9 @@ class _CarouselWithIndicatorState extends State<CarouselWithIndicatorDemo> {
             options: CarouselOptions(
                 autoPlay: true,
                 enlargeCenterPage: true,
-                aspectRatio: 2.0,
+                aspectRatio: 0.9,
+                enlargeStrategy: CenterPageEnlargeStrategy.zoom,
+                enlargeFactor: 0.5,
                 onPageChanged: (index, reason) {
                   setState(() {
                     _current = index;
@@ -193,22 +142,3 @@ class _CarouselWithIndicatorState extends State<CarouselWithIndicatorDemo> {
 
 
 
-class EnlargeStrategyZoomDemo extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(title: Text('enlarge strategy: zoom demo')),
-      body: Container(
-        child: CarouselSlider(
-          options: CarouselOptions(
-            aspectRatio: 1,
-            enlargeCenterPage: true,
-            enlargeStrategy: CenterPageEnlargeStrategy.zoom,
-            enlargeFactor: 0.5,
-          ),
-          items: imageSliders,
-        ),
-      ),
-    );
-  }
-}
