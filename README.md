@@ -18,3 +18,7 @@ samples, guidance on mobile development, and a full API reference.
 
 https://github.com/MEeTpanchal1222/media_player_example_ch_6/assets/143181413/c2b5c484-246e-4975-a590-98aa7e1132c1
 
+
+
+https://github.com/MEeTpanchal1222/media_player_example_ch_6/assets/143181413/05b2d776-fe16-4ff5-8adf-2061dd3dbbb0
+
